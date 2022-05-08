@@ -104,13 +104,12 @@ app.get('/', (req, res) => {
     res.render('welcome.ejs');
 })
 
-app.get('/start_oauth', async (req, res) => {
+app.get('/randomState', async (req, res) => {
     // get a randome state
     const randState = getRandomState();
     // save state in datastore
     try {
         await saveState(randState);
-        console.log('state saved')
     } catch (err) {
         console.log('create creds', err);
     }
@@ -123,7 +122,6 @@ app.get('/oauth', async (req, res) => {
     
     try{
         const state_exists = await checkState(req.query.state);
-        console.log(state_exists);
         if (state_exists) {
             const auth_code = req.query.code;
             const token = await getToken(auth_code);
